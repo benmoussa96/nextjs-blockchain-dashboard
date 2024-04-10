@@ -2,6 +2,8 @@
 
 // import Header from '@/layouts/app-header';
 import { useSidebars } from '@/layouts/app-layout-utils';
+import LeftSidebarFixed from '@/layouts/sidebar/left-sidebar-fixed';
+import SidebarExpandable from '@/layouts/sidebar/sidebar-expanded';
 import cn from '@/utils/class-names';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -9,6 +11,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <main className={cn('flex min-h-screen flex-grow')}>
+      <LeftSidebarFixed />
+      <SidebarExpandable />
       <div className="flex w-full flex-col ">
         <div
           className={cn(

@@ -20,7 +20,9 @@
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.0.1",
+    "react-use": "^17.5.0",
     "rizzui": "^0.8.4",
+    "simplebar-react": "^3.2.4",
     "tailwind-merge": "^2.2.2"
   },
   "devDependencies": {
