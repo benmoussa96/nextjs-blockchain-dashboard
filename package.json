@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prettier": "prettier --write .",
-    "prepare": "husky"
+    "prettier": "prettier --write ."
   },
   "dependencies": {
     "@tailwindcss/container-queries": "^0.1.1",
