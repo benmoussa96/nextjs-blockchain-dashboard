@@ -6,7 +6,9 @@ import { MenuItemsType } from './fixed-menu-items';
 const LOCAL_STORAGE_KEY = 'iso-sidebar-left-expanded';
 
 const isomorphicSidebarLeftExpandedAtom = atom(
-  typeof window !== 'undefined' ? localStorage.getItem(LOCAL_STORAGE_KEY) : false
+  typeof window !== 'undefined'
+    ? localStorage.getItem(LOCAL_STORAGE_KEY)
+    : false
 );
 
 const isomorphicSidebarLeftExpandedAtomWithPersistence = atom(
@@ -34,23 +36,21 @@ export function getActiveMainMenuIndex(
   pathname: string,
   menuItems: MenuItemsType[]
 ) {
-  let activeIndex = -1;
+  let activeIndex = 0;
   for (let i = 0; i < menuItems.length; i++) {
     const menuItem = menuItems[i];
-    if (menuItem.menuItems) {
-      for (let j = 0; j < menuItem.menuItems.length; j++) {
-        const items = menuItem.menuItems[j];
-        if (items.href === pathname) {
-          activeIndex = i;
-          break;
-        } else {
-          if (items.subMenuItems) {
-            for (let k = 0; k < items.subMenuItems.length; k++) {
-              const subMenuItem = items.subMenuItems[k];
-              if (subMenuItem.href === pathname) {
-                activeIndex = i;
-                break;
-              }
+    for (let j = 0; j < menuItem.menuItems.length; j++) {
+      const items = menuItem.menuItems[j];
+      if (items.href && pathname.includes(items.href)) {
+        activeIndex = i;
+        break;
+      } else {
+        if (items.subMenuItems) {
+          for (let k = 0; k < items.subMenuItems.length; k++) {
+            const subMenuItem = items.subMenuItems[k];
+            if (pathname.includes(subMenuItem.href)) {
+              activeIndex = i;
+              break;
             }
           }
         }

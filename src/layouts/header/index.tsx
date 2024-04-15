@@ -74,7 +74,7 @@ export default function Header({ className }: { className?: string }) {
           href={'/'}
           className="me-4 hidden w-[155px] shrink-0 text-gray-800 hover:text-gray-900 lg:me-5 xl:block"
         >
-          <Logo className="max-w-[155px] h-1/4" />
+          <Logo className="max-w-[155px]" />
         </Link>
       </div>
 

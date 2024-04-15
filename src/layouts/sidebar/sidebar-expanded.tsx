@@ -3,10 +3,7 @@
 import StatusBadge from '@/components/get-status-badge';
 import SimpleBar from '@/components/ui/simplebar';
 import { useSidebars } from '@/layouts/app-layout-utils';
-import {
-  ItemType,
-  menuItemAtom,
-} from '@/layouts/fixed-menu-items';
+import { ItemType, selectedMenuItemAtom } from '@/layouts/fixed-menu-items';
 import cn from '@/utils/class-names';
 import { useAtomValue } from 'jotai';
 import Link from 'next/link';
@@ -17,8 +14,8 @@ import { Collapse } from 'rizzui';
 
 function LinkMenuItem({ item }: { item: ItemType }) {
   const pathname = usePathname();
-  const isActive = pathname === item.href;
-  
+  const isActive = item.href && pathname.includes(item.href);
+
   return (
     <Link
       href={item.href ?? '/'}
@@ -30,9 +27,7 @@ function LinkMenuItem({ item }: { item: ItemType }) {
       )}
     >
       <div className="flex items-center gap-2 truncate">
-        <span>
-          {item.icon}
-        </span>
+        <span>{item.icon}</span>
         <span className="truncate">{item.name}</span>
       </div>
       {item?.badge?.length ? <StatusBadge status={item?.badge} /> : null}
@@ -43,11 +38,11 @@ function LinkMenuItem({ item }: { item: ItemType }) {
 function CollapsibleMenuItem({ item }: { item: ItemType }) {
   const pathname = usePathname();
   const pathnameExistInDropdowns: any = item?.subMenuItems?.filter(
-    (dropdownItem) => dropdownItem.href === pathname
+    (dropdownItem) => pathname.includes(dropdownItem.href)
   );
   const isDropdownOpen = Boolean(pathnameExistInDropdowns?.length);
-  const isActive = item.subMenuItems?.some(
-    (subMenuItem) => subMenuItem.href === pathname
+  const isActive = item.subMenuItems?.some((subMenuItem) =>
+    pathname.includes(subMenuItem.href)
   );
 
   return (
@@ -83,7 +78,7 @@ function CollapsibleMenuItem({ item }: { item: ItemType }) {
       )}
     >
       {item?.subMenuItems?.map((subMenuItem, index) => {
-        const isChildActive = pathname === (subMenuItem?.href as string);
+        const isChildActive = pathname.includes(subMenuItem?.href);
 
         return (
           <Link
@@ -107,7 +102,9 @@ function CollapsibleMenuItem({ item }: { item: ItemType }) {
               />
               <span className="truncate">{subMenuItem?.name}</span>
             </div>
-            {subMenuItem?.badge?.length ? <StatusBadge status={subMenuItem?.badge} /> : null}
+            {subMenuItem?.badge?.length ? (
+              <StatusBadge status={subMenuItem?.badge} />
+            ) : null}
           </Link>
         );
       })}
@@ -117,8 +114,8 @@ function CollapsibleMenuItem({ item }: { item: ItemType }) {
 
 export default function LeftSidebarExpandable() {
   const { expandedLeft } = useSidebars();
-  const selectedMenu = useAtomValue(menuItemAtom);
-  
+  const selectedMenuItem = useAtomValue(selectedMenuItemAtom);
+
   return (
     <div
       className={cn(
@@ -128,10 +125,10 @@ export default function LeftSidebarExpandable() {
     >
       <SimpleBar className="h-[calc(100vh_-_100px)] min-w-[294px] pe-2.5">
         <p className="mb-3 text-xs font-normal uppercase tracking-widest text-gray-500">
-          {selectedMenu.title}
+          {selectedMenuItem.title}
         </p>
         <div className="flex flex-col gap-2">
-          {selectedMenu.menuItems?.map((menu) => (
+          {selectedMenuItem.menuItems?.map((menu) => (
             <Fragment key={menu.name}>
               {menu.href ? (
                 <LinkMenuItem item={menu} />

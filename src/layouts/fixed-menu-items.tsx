@@ -1,10 +1,7 @@
 import { networksConfig } from '@/config/networks';
 import { routes } from '@/config/routes';
 import { atom } from 'jotai';
-import {
-  PiHouse,
-  PiLightning
-} from 'react-icons/pi';
+import { PiHouse, PiLightning } from 'react-icons/pi';
 
 export interface SubMenuItemType {
   name: string;
@@ -28,7 +25,7 @@ export interface MenuItemsType {
   icon: React.JSX.Element;
   href?: string;
   title?: string;
-  menuItems?: ItemType[];
+  menuItems: ItemType[];
 }
 
 export const menuItems: MenuItemsType[] = [
@@ -36,18 +33,21 @@ export const menuItems: MenuItemsType[] = [
     id: '1',
     name: 'Home',
     icon: <PiHouse className="h-auto w-6" />,
-    href: '/'
+    href: '/',
+    menuItems: [],
   },
   {
     id: '2',
     name: 'Networks',
     title: 'Networks',
     icon: <PiLightning className="h-auto w-6" />,
-    menuItems: Object.entries(networksConfig)?.map(([chainId, network]) => ({
-      name: network.name,
-      href: routes.dashboard.network(chainId),
-      icon: network.icon,
-    })),
+    menuItems: Object.entries(networksConfig)?.map(
+      ([networkName, network]) => ({
+        name: network.label,
+        href: routes.dashboard.network(networkName),
+        icon: network.icon,
+      })
+    ),
   },
 ];
-export const menuItemAtom = atom(menuItems[0]);
+export const selectedMenuItemAtom = atom(menuItems[0]);

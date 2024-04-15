@@ -8,8 +8,8 @@ import {
 } from '@/layouts/app-layout-utils';
 import {
   MenuItemsType,
-  menuItemAtom,
   menuItems,
+  selectedMenuItemAtom,
 } from '@/layouts/fixed-menu-items';
 import cn from '@/utils/class-names';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
@@ -19,19 +19,23 @@ import { PiTextIndent } from 'react-icons/pi';
 import { ActionIcon } from 'rizzui';
 
 function MenuItem({ menu }: { menu: MenuItemsType }) {
+  const pathname = usePathname();
   const router = useRouter();
   const { expandedLeft, setExpandedLeft } = useSidebars();
-  const [menuItems, setMenuItems] = useAtom(menuItemAtom);
-  const isActive = menuItems === menu;
-  
+  const [selectedMenuItems, setSelectedMenuItems] =
+    useAtom(selectedMenuItemAtom);
+  const isActive = selectedMenuItems === menu;
+
   function handleClick() {
-    setMenuItems(menu);
-    if (!expandedLeft) {
-      if (menu.menuItems) {
-        setExpandedLeft(true);
-      }
-    } else if (isActive || !menu.menuItems) {
+    setSelectedMenuItems(menu);
+    if (!expandedLeft && menu.menuItems.length > 0) {
+      setExpandedLeft(true);
+    } else if (isActive || menu.menuItems.length <= 0) {
       setExpandedLeft(false);
+
+      const activeMenuIndex = getActiveMainMenuIndex(pathname, menuItems);
+      if (activeMenuIndex >= 0)
+        setSelectedMenuItems(menuItems[activeMenuIndex]);
     }
 
     if (menu.href) router.push(menu.href);
@@ -72,17 +76,18 @@ function MenuItems() {
 export default function LeftSidebarFixed() {
   const pathname = usePathname();
   const { width } = useWindowSize();
-  const setMenuItems = useSetAtom(menuItemAtom);
-  const selectedMenu = useAtomValue(menuItemAtom);
+  const setSelectedMenuItem = useSetAtom(selectedMenuItemAtom);
+  const selectedMenu = useAtomValue(selectedMenuItemAtom);
   const { expandedLeft, setExpandedLeft } = useSidebars();
 
-  useEffect(() => {
-    const activeMenuIndex = getActiveMainMenuIndex(
-      pathname,
-      menuItems
-    );
-    if (activeMenuIndex >= 0) setMenuItems(menuItems[activeMenuIndex]);
+  const retractMenu = () => {
+    const activeMenuIndex = getActiveMainMenuIndex(pathname, menuItems);
+    if (activeMenuIndex >= 0) setSelectedMenuItem(menuItems[activeMenuIndex]);
     setExpandedLeft(false);
+  };
+
+  useEffect(() => {
+    retractMenu();
   }, [pathname]);
 
   return (
@@ -93,8 +98,12 @@ export default function LeftSidebarFixed() {
         className="rounded-full bg-transparent text-white transition-colors hover:bg-gray-300  hover:enabled:text-gray-900"
         size="xl"
         onClick={() => {
-          if (!selectedMenu.menuItems) setMenuItems(menuItems[1])
-          setExpandedLeft(!expandedLeft)
+          if (expandedLeft) {
+            retractMenu();
+          } else {
+            setSelectedMenuItem(menuItems[1]);
+            setExpandedLeft(true);
+          }
         }}
       >
         <PiTextIndent className="h-auto w-9" />
