@@ -17,7 +17,7 @@ export default function PercentWidget({
         value={percent}
         color={percent >= 66 ? 'success' : percent <= 33 ? 'danger' : 'warning'}
         label={'gas used'}
-        className={`h-1.5 w-24 bg-${color}-400`}
+        className={`h-1.5 w-24 bg-${color}/20`}
       />
       <Text className={`pt-1.5 text-[13px] text-${color}`}>
         {`${percent}%`}

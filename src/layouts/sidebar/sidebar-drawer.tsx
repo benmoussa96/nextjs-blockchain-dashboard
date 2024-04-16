@@ -42,19 +42,6 @@ export default function Sidebar({ className }: { className?: string }) {
 
             return (
               <Fragment key={item.name + '-' + index}>
-                {/* {item?.title && (
-                  <Title
-                    as="h6"
-                    className={cn(
-                      'mb-2 truncate px-6 text-xs font-medium uppercase tracking-widest text-gray-500 2xl:px-8 dark:text-gray-500',
-                      index !== 0 && 'mt-6 3xl:mt-7'
-                    )}
-                  >
-                    {item.name}
-                  </Title>
-                )} */}
-                {/* {item?.href ? (
-                  <> */}
                 {item?.menuItems.length > 0 ? (
                   <Collapse
                     defaultOpen={isDropdownOpen}

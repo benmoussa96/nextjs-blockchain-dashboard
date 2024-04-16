@@ -99,7 +99,7 @@ export default function BlockInfo({
             <Text className="gap-3 font-medium text-gray-700">
               {blockData.blockRewardETH} ETH{' '}
               <span className="text-sm text-gray-500">
-                (0 + {blockData.txFees} - {blockData.fees.burntFees})
+                (0 + {blockData.fees.txFees} - {blockData.fees.burntFees})
               </span>
             </Text>
           ),
@@ -132,9 +132,9 @@ export default function BlockInfo({
           name: 'Base fee per gas',
           value: (
             <Text className="gap-3 font-medium text-gray-700">
-              {blockData.baseFeePerGas.eth} ETH
+              {blockData.fees.baseFeePerGas.eth} ETH
               <span className="text-sm text-gray-500">
-                {' (' + blockData.baseFeePerGas.gwei + ' Gwei)'}
+                {' (' + blockData.fees.baseFeePerGas.gwei + ' Gwei)'}
               </span>
             </Text>
           ),
@@ -146,16 +146,13 @@ export default function BlockInfo({
               value={blockData.fees.burntFees}
               percent={blockData.fees.burntFeesPercent}
             />
-            // <Text className="gap-3 font-medium text-gray-700">
-            //   {blockData.fees.burntFees} ETH
-            // </Text>
           ),
         },
         {
           name: 'Priority fee / Tip',
           value: (
             <Text className="gap-3 font-medium text-gray-700">
-              {blockData.priorityFee} ETH
+              {blockData.fees.priorityFee} ETH
             </Text>
           ),
         },

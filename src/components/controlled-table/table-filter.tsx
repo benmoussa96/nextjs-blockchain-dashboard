@@ -103,7 +103,7 @@ export default function TableFilter({
         {!showSearchOnTheRight ? (
           <Input
             type="search"
-            placeholder="Search by block number..."
+            placeholder="Search..."
             value={searchTerm}
             onClear={onSearchClear}
             onChange={onSearchChange}
@@ -139,7 +139,7 @@ export default function TableFilter({
         {showSearchOnTheRight ? (
           <Input
             type="search"
-            placeholder="Search by block number..."
+            placeholder="Search..."
             value={searchTerm}
             onClear={onSearchClear}
             onChange={onSearchChange}

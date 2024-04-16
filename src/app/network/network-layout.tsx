@@ -2,16 +2,9 @@
 
 import PageHeader, { PageHeaderTypes } from '@/app/shared/page-header';
 
-type NetworkLayoutProps = {
-  data?: unknown[];
-  header?: string;
-  fileName?: string;
-} & PageHeaderTypes;
+type NetworkLayoutProps = {} & PageHeaderTypes;
 
 export default function NetworkLayout({
-  data,
-  header,
-  fileName,
   children,
   ...props
 }: React.PropsWithChildren<NetworkLayoutProps>) {

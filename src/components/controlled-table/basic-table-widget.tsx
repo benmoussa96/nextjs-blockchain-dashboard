@@ -7,8 +7,8 @@ import { useColumn } from '@/hooks/use-column';
 import { useTable } from '@/hooks/use-table';
 import cn from '@/utils/class-names';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import React from 'react';
+
 type ColumnTypes = {
   data?: any[];
   sortConfig?: any;
@@ -69,8 +69,6 @@ export default function BasicTableWidget({
   className,
   searchPlaceholder = 'Search...',
 }: BasicTableWidgetProps) {
-  const router = useRouter();
-
   const onHeaderCellClick = (value: string) => ({
     onClick: () => {
       handleSort(value);
@@ -87,10 +85,8 @@ export default function BasicTableWidget({
     totalItems,
     tableData,
     currentPage,
-    searchTerm,
     handleSort,
     handleDelete,
-    handleSearch,
     handlePaginate,
     selectedRowKeys,
     handleRowSelect,
@@ -136,15 +132,6 @@ export default function BasicTableWidget({
           >
             View All Transactions
           </Link>
-          // <Button
-          //   size="sm"
-          //   className="rounded-md text-xs font-medium"
-          //   onClick={() =>
-          //     router.push(routes.dashboard.transactions(networkName, blockId))
-          //   }
-          // >
-          //   View All Transactions
-          // </Button>
         ),
       })}
     >

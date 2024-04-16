@@ -1,13 +1,12 @@
 'use client';
 
-import { getColumns } from '@/app/shared/blocks/blocks-list/columns';
+import { getColumns } from '@/app/shared/blocks/blocks-list/blocks-columns';
 import ControlledTable from '@/components/controlled-table';
 import { type NetworkData } from '@/config/networks';
 import { useColumn } from '@/hooks/use-column';
 import { useTable } from '@/hooks/use-table';
 import dynamic from 'next/dynamic';
 import React, { useCallback, useState } from 'react';
-import { Button } from 'rizzui';
 
 const FilterElement = dynamic(
   () => import('@/app/shared/blocks/blocks-list/filter-element'),
@@ -18,12 +17,12 @@ const TableFooter = dynamic(() => import('@/app/shared/table-footer'), {
 });
 
 export type Filter = {
-  number: string[];
+  height: string[];
   timestamp: string[];
 };
 
 const filterState: Filter = {
-  number: ['', ''],
+  height: ['', ''],
   timestamp: ['', ''],
 };
 
@@ -67,7 +66,6 @@ export default function BlocksTable({
     sortConfig,
     handleSort,
     selectedRowKeys,
-    setSelectedRowKeys,
     handleRowSelect,
     handleSelectAll,
     handleDelete,
@@ -138,20 +136,6 @@ export default function BlocksTable({
             handleReset={handleReset}
             blockHeight={blockHeight}
           />
-        }
-        tableFooter={
-          <TableFooter
-            checkedItems={selectedRowKeys}
-            handleDelete={(ids: string[]) => {
-              setSelectedRowKeys([]);
-              handleDelete(ids);
-            }}
-          >
-            <Button size="sm" className="dark:bg-gray-300 dark:text-gray-800">
-              Re-send {selectedRowKeys.length}{' '}
-              {selectedRowKeys.length > 1 ? 'Invoices' : 'Invoice'}{' '}
-            </Button>
-          </TableFooter>
         }
         className="overflow-hidden rounded-md border border-muted text-sm shadow-sm [&_.rc-table-placeholder_.rc-table-expanded-row-fixed>div]:h-60 [&_.rc-table-placeholder_.rc-table-expanded-row-fixed>div]:justify-center [&_.rc-table-row:last-child_td.rc-table-cell]:border-b-0 [&_thead.rc-table-thead]:border-t-0"
       />

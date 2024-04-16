@@ -26,8 +26,8 @@ export default function FilterElement({
   return (
     <>
       <RangeField
-        value={filters['number']}
-        onChange={(data) => updateFilter('number', data)}
+        value={filters['height']}
+        onChange={(data) => updateFilter('height', data)}
         maxRange={blockHeight?.toString()}
       />
       <DateFiled

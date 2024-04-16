@@ -1,21 +1,12 @@
 'use client';
 
-import BasicTableWidget from '@/components/controlled-table/basic-table-widget';
 import { CountDown } from '@/components/ui/count-down';
 import { HeaderCell } from '@/components/ui/table';
-import { NetworkData } from '@/config/networks';
 import { routes } from '@/config/routes';
 import cn from '@/utils/class-names';
 import { truncateAddr, truncateHash } from '@/utils/ethereum-utils';
-import { fetchAllTransactions } from '@/utils/fetch-block-data';
 import Link from 'next/link';
 import { Badge } from 'rizzui';
-
-interface DeliveryDetailsProps {
-  network: NetworkData;
-  blockId: string;
-  className?: string;
-}
 
 const typeColors: any = {
   Transaction: 'primary',
@@ -42,7 +33,7 @@ export const getColumns = ({
           <Link
             href={routes.dashboard.transacionDetails(
               row.network,
-              row.number,
+              row.height,
               hash
             )}
             className="rounded-none border-b border-primary px-0 font-medium text-primary"
@@ -134,37 +125,3 @@ export const getColumns = ({
     render: (fee: string) => <p>{fee}</p>,
   },
 ];
-
-export default async function TransactionsTable({
-  network,
-  blockId,
-  className,
-}: DeliveryDetailsProps) {
-  const transactionData = await fetchAllTransactions(
-    network,
-    blockId,
-    process.env.NEXT_PUBLIC_BLOCKSCOUT_API_KEY
-  );
-
-  // console.log(transactionData.length);
-
-  return (
-    transactionData && (
-      <BasicTableWidget
-        title="Transactions "
-        subtitle={`(5 out of ${transactionData.length})`}
-        className={cn(
-          'pb-0 lg:pb-0 [&_.rc-table-row:last-child_td]:border-b-0'
-        )}
-        data={transactionData}
-        blockId={blockId}
-        networkName={network.name}
-        getColumns={getColumns}
-        noGutter
-        scroll={{
-          x: 900,
-        }}
-      />
-    )
-  );
-}

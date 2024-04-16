@@ -37,19 +37,7 @@ export function NetworkCard({ network, className }: NetworkProps) {
             }
           />
           <div className="absolute left-0 top-0 flex h-full w-full flex-col justify-between bg-gray-900/30 p-5 opacity-0 duration-200 group-hover:opacity-100 dark:bg-gray-100/50">
-            <div className="flex items-center gap-2">
-              {/* <div className="relative flex aspect-square w-8 items-center gap-2">
-              <Image
-                alt={nft.username2}
-                src={nft.avatar2}
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw"
-                className="h-full w-full object-cover"
-              />
-            </div>
-            <span className="font-semibold text-white ">{nft.username2}</span> */}
-            </div>
+            <div className="flex items-center gap-2"></div>
             <p className="text-2xl font-semibold text-white">{network.label}</p>
           </div>
         </div>

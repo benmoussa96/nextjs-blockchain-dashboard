@@ -1,7 +1,60 @@
 import { type NetworkData } from '@/config/networks';
 const DECIMALS = 10e17;
 
-export async function fetchBlocksData(network: NetworkData, apikey?: string) {
+export type Block = {
+  key: string;
+  network: string;
+  hash: string;
+  height: number;
+  timestamp: number;
+  size: number;
+  validator: string;
+  txCount: number;
+  withdrawalsCount: number;
+  blockRewardETH: number;
+  gas: {
+    gasLimit: number;
+    gasUsed: number;
+    gasUsedPercent: number;
+    gasTargetPercent: number;
+  };
+  fees: {
+    txFees: number;
+    burntFees: number;
+    burntFeesPercent: number;
+    baseFeePerGas: {
+      eth: number;
+      gwei: number;
+    };
+    priorityFee: number;
+  };
+  difficulty: string;
+  totalDifficulty: string;
+  parentHash: string;
+  nonce: string;
+};
+
+export async function fetchStats(network: NetworkData, apikey?: string) {
+  if (apikey)
+    try {
+      const query = new URLSearchParams({}).toString();
+
+      const resp = await fetch(`${network.apiUrl}stats?${query}`, {
+        method: 'GET',
+      });
+
+      if (!resp || resp.status != 200) {
+        throw new Error('Failed to fetch data');
+      }
+
+      const data = await resp.json();
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+}
+
+export async function fetchAllBlocks(network: NetworkData, apikey?: string) {
   if (apikey)
     try {
       const query = new URLSearchParams({
@@ -11,7 +64,7 @@ export async function fetchBlocksData(network: NetworkData, apikey?: string) {
 
       const resp = await fetch(`${network.apiUrl}blocks?${query}`, {
         method: 'GET',
-        cache: 'force-cache',
+        next: { revalidate: 10 },
       });
 
       if (!resp || resp.status != 200) {
@@ -20,16 +73,17 @@ export async function fetchBlocksData(network: NetworkData, apikey?: string) {
 
       const data = await resp.json();
 
-      const blocksData = data.items.map((block: any) => ({
+      const blocks = data.items.map((block: any) => ({
         key: network.name + block.hash,
         network: network.name,
         hash: block.hash,
-        number: Number(block.height),
+        height: Number(block.height),
         timestamp: block.timestamp,
         size: Number(block.size),
         validator: block.miner.hash,
-        txnCount: Number(block.tx_count),
-        rewardETH: Number(
+        txCount: Number(block.tx_count),
+        withdrawalsCount: Number(block.withdrawals_count),
+        blockRewardETH: Number(
           (
             block.rewards.reduce(
               (acc: number, cur: { reward: string; type: string }) => {
@@ -40,6 +94,7 @@ export async function fetchBlocksData(network: NetworkData, apikey?: string) {
           ).toFixed(8)
         ),
         gas: {
+          gasLimit: Number(block.gas_limit),
           gasUsed: Number(block.gas_used),
           gasUsedPercent: Number(
             parseFloat(block.gas_used_percentage).toFixed(2)
@@ -49,23 +104,33 @@ export async function fetchBlocksData(network: NetworkData, apikey?: string) {
           ),
         },
         fees: {
+          txFees: block.tx_fees / DECIMALS,
           burntFees: Number((block.burnt_fees / DECIMALS).toFixed(8)),
           burntFeesPercent: Number(
             parseFloat(block.burnt_fees_percentage).toFixed(2)
           ),
+          baseFeePerGas: {
+            eth: Number((block.base_fee_per_gas / DECIMALS).toFixed(18)),
+            gwei: Number(block.base_fee_per_gas / 10e8),
+          },
+          priorityFee: block.priority_fee / DECIMALS,
         },
+        difficulty: block.difficulty,
+        totalDifficulty: block.total_difficulty,
+        parentHash: block.parent_hash,
+        nonce: block.nonce,
       }));
 
       return {
-        blocksData,
-        blockHeight: blocksData[0].number,
+        blocks,
+        blockHeight: blocks[0].height,
       };
     } catch (error) {
       console.log(error);
     }
 }
 
-export async function fetchBlockData(
+export async function fetchBlock(
   network: NetworkData,
   blockId: string,
   apikey?: string
@@ -89,11 +154,11 @@ export async function fetchBlockData(
       return {
         key: network.name + block.height,
         network: network.name,
-        height: block.height,
         hash: block.hash,
-        validator: block.miner.hash,
-        size: block.size,
+        height: block.height,
         timestamp: block.timestamp,
+        size: block.size,
+        validator: block.miner.hash,
         txCount: block.tx_count,
         withdrawalsCount: block.withdrawals_count,
         blockRewardETH: Number(
@@ -106,7 +171,6 @@ export async function fetchBlockData(
             ) / DECIMALS
           ).toFixed(8)
         ),
-        txFees: block.tx_fees / DECIMALS,
         gas: {
           gasLimit: block.gas_limit,
           gasUsed: Number(block.gas_used),
@@ -118,16 +182,17 @@ export async function fetchBlockData(
           ),
         },
         fees: {
+          txFees: block.tx_fees / DECIMALS,
           burntFees: Number((block.burnt_fees / DECIMALS).toFixed(8)),
           burntFeesPercent: Number(
             parseFloat(block.burnt_fees_percentage).toFixed(2)
           ),
+          baseFeePerGas: {
+            eth: Number((block.base_fee_per_gas / DECIMALS).toFixed(18)),
+            gwei: Number(block.base_fee_per_gas / 10e8),
+          },
+          priorityFee: block.priority_fee / DECIMALS,
         },
-        baseFeePerGas: {
-          eth: Number(block.base_fee_per_gas / DECIMALS).toFixed(18),
-          gwei: Number(block.base_fee_per_gas / 10e8),
-        },
-        priorityFee: block.priority_fee / DECIMALS,
         difficulty: block.difficulty,
         totalDifficulty: block.total_difficulty,
         parentHash: block.parent_hash,

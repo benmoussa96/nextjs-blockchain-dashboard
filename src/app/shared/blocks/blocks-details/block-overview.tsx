@@ -29,12 +29,7 @@ export default function BlockOverview({
   }
 
   return (
-    <div
-    // className={cn(
-    //   'grid grid-cols-1 gap-10 lg:grid-cols-2 xl:gap-20',
-    //   className
-    // )}
-    >
+    <div>
       <div>
         <Text className="mb-2 text-gray-700">Block Hash:</Text>
         <Title

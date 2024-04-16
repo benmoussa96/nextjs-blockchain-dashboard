@@ -5,7 +5,7 @@ import { truncateHash } from '@/utils/ethereum-utils';
 import { notFound } from 'next/navigation';
 import { useMemo } from 'react';
 
-export default async function Transactions({
+export default async function Transaction({
   params,
 }: {
   params: { networkName: string; blockId: string; hash: string };

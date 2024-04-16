@@ -1,12 +1,11 @@
 'use client';
 
+import { NetworkCard } from '@/components/cards/networks-card';
 import { networksConfig } from '@/config/networks';
 import hasSearchedParams from '@/utils/has-searched-params';
+import shuffle from 'lodash/shuffle';
 import { useState } from 'react';
 import { Button } from 'rizzui';
-// Note: using shuffle to simulate the filter effect
-import { NetworkCard } from '@/components/cards/networks-card';
-import shuffle from 'lodash/shuffle';
 
 let CURRENT_PAGE = 12;
 

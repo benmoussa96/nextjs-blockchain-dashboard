@@ -1,5 +1,5 @@
 import NetworkLayout from '@/app/network/network-layout';
-import { getColumns } from '@/app/shared/blocks/transactions-list/table';
+import { getColumns } from '@/app/shared/transactions/transactions-list/transactions-columns';
 import BasicTableWidget from '@/components/controlled-table/basic-table-widget';
 import { networksConfig } from '@/config/networks';
 import { routes } from '@/config/routes';
@@ -44,12 +44,6 @@ export default async function Transactions({
     params.blockId,
     process.env.NEXT_PUBLIC_BLOCKSCOUT_API_KEY
   );
-
-  // console.log(transactionData.length);
-
-  if (!transactionData) {
-    notFound();
-  }
 
   return (
     <NetworkLayout

@@ -38,13 +38,13 @@ export const getColumns = ({
         title="Block"
         sortable
         ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'number'
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'height'
         }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('number'),
-    dataIndex: 'number',
-    key: 'number',
+    onHeaderCell: () => onHeaderCellClick('height'),
+    dataIndex: 'height',
+    key: 'height',
     width: 120,
     render: (value: string, row: any) => (
       <div className={cn('grid gap-1')}>
@@ -111,18 +111,18 @@ export const getColumns = ({
         title="Txn Count"
         sortable
         ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'txnCount'
+          sortConfig?.direction === 'asc' && sortConfig?.key === 'txCount'
         }
       />
     ),
 
-    onHeaderCell: () => onHeaderCellClick('txnCount'),
-    dataIndex: 'txnCount',
-    key: 'txnCount',
+    onHeaderCell: () => onHeaderCellClick('txCount'),
+    dataIndex: 'txCount',
+    key: 'txCount',
     width: 150,
     render: (value: string, row: any) => (
       <Link
-        href={routes.dashboard.transactions(networkName, row.number)}
+        href={routes.dashboard.transactions(networkName, row.height)}
         className="rounded-none border-b border-primary px-0 font-medium text-primary"
       >
         {value}
@@ -154,13 +154,14 @@ export const getColumns = ({
         title="Reward (ETH)"
         sortable
         ascending={
-          sortConfig?.direction === 'asc' && sortConfig?.key === 'rewardETH'
+          sortConfig?.direction === 'asc' &&
+          sortConfig?.key === 'blockRewardETH'
         }
       />
     ),
-    onHeaderCell: () => onHeaderCellClick('rewardETH'),
-    dataIndex: 'rewardETH',
-    key: 'rewardETH',
+    onHeaderCell: () => onHeaderCellClick('blockRewardETH'),
+    dataIndex: 'blockRewardETH',
+    key: 'blockRewardETH',
     width: 150,
     render: (value: string) => (
       <Text className="font-medium text-gray-700">{value}</Text>
@@ -194,7 +195,7 @@ export const getColumns = ({
             placement="top"
             color="invert"
           >
-            <Link href={routes.dashboard.details(networkName, row.number)}>
+            <Link href={routes.dashboard.details(networkName, row.height)}>
               <ActionIcon
                 as="span"
                 size="sm"
