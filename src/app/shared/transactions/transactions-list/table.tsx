@@ -15,6 +15,8 @@ export default async function TransactionsTable({
   blockId,
   className,
 }: DeliveryDetailsProps) {
+  const PAGE_SIZE = 5;
+
   const transactionData = await fetchAllTransactions(
     network,
     blockId,
@@ -30,7 +32,8 @@ export default async function TransactionsTable({
         className={cn(
           'pb-0 lg:pb-0 [&_.rc-table-row:last-child_td]:border-b-0'
         )}
-        data={transactionData}
+        data={transactionData.slice(0, PAGE_SIZE)}
+        pageSize={PAGE_SIZE}
         blockId={blockId}
         networkName={network.name}
         getColumns={getColumns}

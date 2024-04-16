@@ -64,7 +64,6 @@ export async function fetchAllBlocks(network: NetworkData, apikey?: string) {
 
       const resp = await fetch(`${network.apiUrl}blocks?${query}`, {
         method: 'GET',
-        next: { revalidate: 10 },
       });
 
       if (!resp || resp.status != 200) {
@@ -239,7 +238,7 @@ export async function fetchAllTransactions(
       const transactionData = data.items.map((transaction: any) => ({
         key: network.name + transaction.hash,
         network: network.name,
-        number: transaction.block,
+        height: transaction.block,
         hash: transaction.hash,
         timestamp: transaction.timestamp,
         result: transaction.result,
