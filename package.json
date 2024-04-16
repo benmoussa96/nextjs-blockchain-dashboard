@@ -11,12 +11,10 @@
   },
   "dependencies": {
     "@tailwindcss/container-queries": "^0.1.1",
-    "alchemy-sdk": "^3.2.1",
     "dayjs": "^1.11.10",
     "eslint-config-next": "^14.1.4",
     "jotai": "^2.8.0",
     "lodash": "^4.17.21",
-    "mathjs": "^12.4.1",
     "next": "14.1.4",
     "nextjs-toploader": "^1.6.11",
     "rc-pagination": "^4.0.4",

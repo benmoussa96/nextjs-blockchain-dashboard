@@ -1,12 +1,9 @@
-import { Network } from 'alchemy-sdk';
-
 import LogoArbIcon from '@/components/icons/logo-arb';
 import LogoEthIcon from '@/components/icons/logo-eth';
 import LogoMaticIcon from '@/components/icons/logo-matic';
 import LogoOptIcon from '@/components/icons/logo-opt';
 
 export type NetworkData = {
-  network: Network;
   isAlchemySupported: boolean;
   chainId: string;
   coingeckoPlatformId: string;
@@ -26,7 +23,6 @@ export type NetworkConfig = {
 
 export const networksConfig: NetworkConfig = {
   eth: {
-    network: Network.ETH_MAINNET,
     isAlchemySupported: true,
     chainId: '1',
     coingeckoPlatformId: 'ethereum',
@@ -40,7 +36,6 @@ export const networksConfig: NetworkConfig = {
     apiUrl: 'https://eth.blockscout.com/api/v2/',
   },
   polygon: {
-    network: Network.MATIC_MAINNET,
     isAlchemySupported: true,
     chainId: '137',
     coingeckoPlatformId: 'polygon-pos',
@@ -54,7 +49,6 @@ export const networksConfig: NetworkConfig = {
     apiUrl: 'https://polygon.blockscout.com/api/v2/',
   },
   arbitrum: {
-    network: Network.ARB_MAINNET,
     isAlchemySupported: true,
     chainId: '42161',
     coingeckoPlatformId: 'arbitrum-one',
@@ -68,7 +62,6 @@ export const networksConfig: NetworkConfig = {
     apiUrl: 'https://explorer-v1.mxc.com/api/v2/',
   },
   optimism: {
-    network: Network.OPT_MAINNET,
     isAlchemySupported: true,
     chainId: '10',
     coingeckoPlatformId: 'optimistic-ethereum',
