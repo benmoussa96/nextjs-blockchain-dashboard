@@ -64,6 +64,7 @@ export async function fetchAllBlocks(network: NetworkData, apikey?: string) {
 
       const resp = await fetch(`${network.apiUrl}blocks?${query}`, {
         method: 'GET',
+        cache: 'no-store',
       });
 
       if (!resp || resp.status != 200) {
